@@ -1,11 +1,12 @@
 # Resources
 
 http://adilmoujahid.com/posts/2014/07/twitter-analytics/
-Sample Tweet: QMSS_G4063/research/tweet.json
+http://tweepy.readthedocs.org/en/v3.5.0/streaming_how_to.html#summary
 
 # Back-of-the-envelope calculations
 
-
+Sample Tweet: tweet.json
+```
 2-4kb / tweet JSON
 500m tweets / day (unfiltered)
 1b - 2b kb / day (unfiltered)
@@ -37,6 +38,7 @@ so between (2**20)/2 and (2**20)/4
 
 2**18 = 262,144
 2**19 = 524,288
+```
 
 So:
 Conservatively, 250k tweets/gb
@@ -54,12 +56,14 @@ July 28: End of Democratic National Convention
 
 To limit ourselves to (t) tb, we need to filter down to (t * 1024) / 180 gb / day.
 
+```
 t = 4
 1024 * 4 = 4096
 4096 / 180 = 22.76gb/day
 
 At 250k tweets/gb, we can capture 5,690,000 tweets/day
 Or approx 1 percent tweets.
+```
 
 def tweets_per_day(storage, days=180):
     return round(float(storage) / days), 2) * 250000
