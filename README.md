@@ -1,12 +1,14 @@
 # Resources
 
-http://adilmoujahid.com/posts/2014/07/twitter-analytics/
+https://dev.twitter.com/streaming/reference/post/statuses/filter
 http://tweepy.readthedocs.org/en/v3.5.0/streaming_how_to.html#summary
+http://adilmoujahid.com/posts/2014/07/twitter-analytics/
+
 
 # Back-of-the-envelope calculations
-
-Sample Tweet: tweet.json
 ```
+Sample Tweet: tweet.json
+
 2-4kb / tweet JSON
 500m tweets / day (unfiltered)
 1b - 2b kb / day (unfiltered)
@@ -75,3 +77,17 @@ def tweets_per_day(storage, days=180):
 Tweepy is the third-party package we are using to interact with the Twitter api.
 
 Docs: http://tweepy.readthedocs.org/en/v3.5.0/getting_started.html
+
+# Queries
+
+https://dev.twitter.com/streaming/overview/request-parameters
+
+## Tracking
+```
+track=["Hillary Clinton", "Bernie Sanders", "Ted Cruz", "Donald Trump"]
+```
+
+## Following
+```
+follow=[]
+```
