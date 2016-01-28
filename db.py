@@ -15,10 +15,9 @@ import sqlalchemy
 from sqlalchemy import Table, Column, MetaData, Sequence
 from sqlalchemy import BigInteger, Integer, Unicode, DateTime
 
-engine = sqlalchemy.create_engine(
-    "postgresql://kronosapiens:@localhost/election_tweets",
-    echo=False
-    )
+from config import db
+
+engine = sqlalchemy.create_engine(db, echo=False)
 
 metadata = MetaData(engine)
 

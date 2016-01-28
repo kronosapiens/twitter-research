@@ -63,6 +63,8 @@ t = 4
 
 At 250k tweets/gb, we can capture 5,690,000 tweets/day
 Or approx 1 percent tweets.
+
+Over 180 days, this gives 1,024,200,000 tweets.
 ```
 
 Function to return tweet limit based on constraints:
