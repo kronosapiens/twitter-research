@@ -4,17 +4,13 @@ dbk2123@columbia.edu
 
 Code to consume tweets from the Twitter Streaming API.
 '''
-import logging
-
 import tweepy
 
 import config
+from config import logging
 import keywords
 
 from streamlistener import MyStreamListener
-
-logging.basicConfig(
-    filename='../stream.log', format='%(levelname)s:%(asctime)s:%(message)s', level=logging.DEBUG)
 
 auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_token, config.access_token_secret)

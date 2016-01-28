@@ -6,7 +6,9 @@ https://github.com/tweepy/tweepy/blob/f76492964869caeda933d559fb51441014396b5f/t
 from tweepy import StreamListener
 from sqlalchemy.exc import DataError
 
+from config import logging
 from db import engine, metadata
+
 
 tweets = metadata.tables['tweets']
 conn = engine.connect()
