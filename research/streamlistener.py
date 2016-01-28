@@ -34,7 +34,7 @@ class MyStreamListener(StreamListener):
     #     print raw_data
 
     def on_status(self, status):
-        print self.to_string(status)
+        # print self.to_string(status)
         try:
             self.to_db(status)
         except DataError as ex:
