@@ -7,8 +7,8 @@ Code to consume tweets from the Twitter Streaming API.
 import tweepy
 
 import config
-from config import logging
 import keywords
+from utils import logging
 
 from streamlistener import MyStreamListener
 
