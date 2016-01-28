@@ -93,3 +93,15 @@ track=["Hillary Clinton", "Bernie Sanders", "Ted Cruz", "Donald Trump"]
 ```
 follow=[]
 ```
+
+
+
+# Command reference
+
+```
+sudo apt-get install libpq-dev python-dev lib32ncurses5-dev python-psycopg2
+```
+
+```
+psql -h <db url> -p 5432 -U <username> -d <db name>
+```

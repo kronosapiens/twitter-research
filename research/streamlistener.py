@@ -4,6 +4,7 @@ https://github.com/tweepy/tweepy/blob/f76492964869caeda933d559fb51441014396b5f/t
 '''
 
 from tweepy import StreamListener
+from sqlalchemy.exc import DataError
 
 from db import engine, metadata
 
@@ -19,11 +20,7 @@ class MyStreamListener(StreamListener):
             status.author.screen_name, status.created_at, status.text)
         return string.encode('utf-8')
 
-    # def on_data(self, raw_data):
-    #     print raw_data
-
-    def on_status(self, status):
-        print self.to_string(status)
+    def to_db(self, status):
         ins = tweets.insert().values(
             tweet_id=status.id,
             user_id=status.author.id,
@@ -32,6 +29,16 @@ class MyStreamListener(StreamListener):
             text=status.text
             )
         conn.execute(ins)
+
+    # def on_data(self, raw_data):
+    #     print raw_data
+
+    def on_status(self, status):
+        print self.to_string(status)
+        try:
+            self.to_db(status)
+        except DataError as ex:
+            logging.error(ex)
 
         self.count += 1
         if self.count % 100 == 0:

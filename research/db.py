@@ -25,7 +25,7 @@ tweets = Table('tweets', metadata,
    Column('id', Integer, Sequence('tweet_id_seq'), primary_key=True),
    Column('tweet_id', BigInteger),
    Column('user_id', BigInteger),
-   Column('user_location', Unicode(128)),
+   Column('user_location', Unicode(560)),
    Column('created_at', DateTime(timezone=True)),
    Column('text', Unicode(560)), # 140 * 4 bytes (max unicode)
 )
