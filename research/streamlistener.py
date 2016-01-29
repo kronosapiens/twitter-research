@@ -34,7 +34,12 @@ class MyStreamListener(StreamListener):
     def on_data(self, raw_data):
         if self.storage == 'nosql':
             tweet_dict = self.to_json(raw_data)
-            self.to_nosql(tweet_dict)
+            if self.is_tweet(tweet_dict):
+                self.to_nosql(tweet_dict)
+                return
+            else:
+                pass
+                # logging.info(tweet_dict)
         super(MyStreamListener, self).on_data(raw_data)
 
     def on_status(self, status):
@@ -99,13 +104,6 @@ class MyStreamListener(StreamListener):
 
         return tweet_dict
 
-    def remove_empty_strings(self, tweet_dict):
-        for key in tweet_dict.keys():
-            if tweet_dict[key] == '':
-                del tweet_dict[key]
-            elif isinstance(tweet_dict[key], dict):
-                self.remove_empty_strings(tweet_dict[key])
-
     def to_sql(self, status):
         ins = self.tweets.insert().values(
             tweet_id=status.id,
@@ -120,8 +118,20 @@ class MyStreamListener(StreamListener):
         try:
             self.tweets.put_item(Item=tweet_dict)
             print tweet_dict['text']
+
         except ClientError as ex:
             print tweet_dict
             raise ex
-            # print ex
-            # logging.error(ex)
+
+    #####################
+    ### UTILITY FUNCTIONS
+
+    def remove_empty_strings(self, tweet_dict):
+        for key in tweet_dict.keys():
+            if tweet_dict[key] == '':
+                del tweet_dict[key]
+            elif isinstance(tweet_dict[key], dict):
+                self.remove_empty_strings(tweet_dict[key])
+
+    def is_tweet(self, tweet_dict):
+        return 'id_str' in tweet_dict
