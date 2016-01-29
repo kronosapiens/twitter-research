@@ -71,29 +71,40 @@ class MyStreamListener(StreamListener):
         return string.encode('utf-8')
 
     def to_json(self, raw_data):
-        tweet_json = json.loads(raw_data, parse_float=decimal.Decimal)
+        tweet_dict = json.loads(raw_data, parse_float=decimal.Decimal)
 
-        sub_tweets = [
-            tweet_json,
-            tweet_json.get('retweeted_status', {}),
-            tweet_json.get('retweeted_status', {}).get('quoted_status', {}),
-            tweet_json.get('quoted_status', {}),
-            tweet_json.get('quoted_status', {}).get('retweeted_status', {}),
-        ]
+        self.remove_empty_strings(tweet_dict)
 
-        sub_tweets = [st for st in sub_tweets if st] # Skip empty dicts
+        # sub_tweets = [
+        #     tweet_dict,
+        #     tweet_dict.get('retweeted_status', {}),
+        #     tweet_dict.get('retweeted_status', {}).get('quoted_status', {}),
+        #     tweet_dict.get('quoted_status', {}),
+        #     tweet_dict.get('quoted_status', {}).get('retweeted_status', {}),
+        # ]
 
-        keys = [
-            'profile_background_image_url',
-            'profile_background_image_url_https'
-        ]
+        # sub_tweets = [st for st in sub_tweets if st] # Skip empty dicts
 
-        for sub_tweet in sub_tweets:
-            for key in keys:
-                if sub_tweet.get('user', {}).get(key, None) == '':
-                    del sub_tweet['user'][key]
+        # keys = [
+        #     'profile_background_image_url',
+        #     'profile_background_image_url_https'
+        # ]
 
-        return tweet_json
+        # for sub_tweet in sub_tweets:
+        #     if sub_tweet.get('source') == '':
+        #         del sub_tweet['source']
+        #     for key in keys:
+        #         if sub_tweet.get('user', {}).get(key, None) == '':
+        #             del sub_tweet['user'][key]
+
+        return tweet_dict
+
+    def remove_empty_strings(self, tweet_dict):
+        for key in tweet_dict.keys():
+            if tweet_dict[key] == '':
+                del tweet_dict[key]
+            elif isinstance(tweet_dict[key], dict):
+                self.remove_empty_strings(tweet_dict[key])
 
     def to_sql(self, status):
         ins = self.tweets.insert().values(

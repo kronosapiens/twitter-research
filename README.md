@@ -105,3 +105,7 @@ sudo apt-get install libpq-dev python-dev lib32ncurses5-dev python-psycopg2
 ```
 psql -h <db url> -p 5432 -U <username> -d <db name>
 ```
+
+```
+ssh -i QMSS_TP.pem ubuntu@ec2-54-172-89-178.compute-1.amazonaws.com
+```
