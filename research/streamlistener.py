@@ -44,7 +44,11 @@ class MyStreamListener(StreamListener):
 
     def on_status(self, status):
         if self.storage == 'stdout':
-            print self.to_string(status)
+            print self.to_string(
+                status.author.screen_name,
+                status.created_at,
+                status.text,
+            )
         elif self.storage == 'sql':
             try:
                 self.to_sql(status)
@@ -70,9 +74,8 @@ class MyStreamListener(StreamListener):
     ####################
     ### OUTPUT FUNCTIONS
 
-    def to_string(self, status):
-        string = u'[{}-{}] {}'.format(
-            status.author.screen_name, status.created_at, status.text)
+    def to_string(self, screen_name, created_at, text):
+        string = u'[{}-{}] {}'.format(screen_name, created_at, text)
         return string.encode('utf-8')
 
     def to_json(self, raw_data):
@@ -117,7 +120,11 @@ class MyStreamListener(StreamListener):
     def to_nosql(self, tweet_dict):
         try:
             self.tweets.put_item(Item=tweet_dict)
-            print tweet_dict['text']
+            print self.to_string(
+                tweet_dict['user']['screen_name'],
+                tweet_dict['created_at'],
+                tweet_dict['text'],
+            )
 
         except ClientError as ex:
             print tweet_dict
