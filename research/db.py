@@ -14,10 +14,11 @@ psql commands reference:
 import sqlalchemy
 from sqlalchemy import Table, Column, MetaData, Sequence
 from sqlalchemy import BigInteger, Integer, Unicode, DateTime
+from sqlalchemy.exc import DataError
 
-from config import db
+from config import db_uri
 
-engine = sqlalchemy.create_engine(db, echo=False)
+engine = sqlalchemy.create_engine(db_uri, echo=False)
 
 metadata = MetaData(engine)
 
@@ -30,5 +31,13 @@ tweets = Table('tweets', metadata,
    Column('text', Unicode(560)), # 140 * 4 bytes (max unicode)
 )
 
-metadata.create_all()
-# metadata.drop_all()
+if __name__ == '__main__':
+    import sys
+    action = sys.argv[1]
+
+    if action == 'create':
+        print 'Creating tables...'
+        metadata.create_all()
+    elif action == 'drop':
+        print 'Dropping tables...'
+        metadata.drop_all()

@@ -15,8 +15,17 @@ from streamlistener import MyStreamListener
 auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_token, config.access_token_secret)
 
-# api = tweepy.API(auth)
+api = tweepy.API(auth)
 
-logging.info('#' * 50 + 'NEW RUN')
-myStream = tweepy.Stream(auth=auth, listener=MyStreamListener())
-myStream.filter(follow=keywords.users, track=keywords.keywords, stall_warnings=True)
+if __name__ == '__main__':
+    import sys
+
+    storage = sys.argv[1]
+
+    logging.info('#' * 32 + 'NEW RUN')
+    myStream = tweepy.Stream(auth=auth, listener=MyStreamListener(storage))
+    myStream.filter(
+        follow=keywords.users,
+        track=keywords.keywords,
+        stall_warnings=True
+        )
