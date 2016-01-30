@@ -68,3 +68,6 @@ config.*
 
 # Keys
 *.pem
+
+# Nohup
+nohup.out
