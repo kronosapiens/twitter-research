@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     storage = sys.argv[1]
 
-    logging.info('#' * 32 + 'NEW RUN')
+    logging.info('NEW RUN ' * 8)
     myStream = tweepy.Stream(auth=auth, listener=MyStreamListener(storage))
     myStream.filter(
         follow=keywords.users,

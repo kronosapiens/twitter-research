@@ -98,14 +98,30 @@ follow=[]
 
 # Command reference
 
+
+To configure a new instance with the necessary Ubuntu packages:
 ```
 sudo apt-get install libpq-dev python-dev lib32ncurses5-dev python-psycopg2
 ```
 
+To connect to a remote PostgreSQL database:
 ```
 psql -h <db url> -p 5432 -U <username> -d <db name>
 ```
 
+To connect to the current EC2 instance (must have the .pem file):
 ```
 ssh -i QMSS_TP.pem ubuntu@ec2-54-172-89-178.compute-1.amazonaws.com
 ```
+
+To restarting the tweet collecting process:
+```
+cd ~/twitter_research
+nohup python research/stream.py nosql &
+```
+
+To check if the tweet collecting process is running:
+```
+ps -aux | grep research/stream.py
+```
+
