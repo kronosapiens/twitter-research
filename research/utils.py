@@ -2,7 +2,8 @@ import logging
 
 import boto3
 
-FMT = '[%(name)s:%(levelname)s]:%(asctime)s:%(message)s'
+FMT = '[%(levelname)s:%(name)s]:(%(asctime)s):%(message)s'
+FMT = '%(asctime)s [%(levelname)s] %(name)s : %(message)s'
 
 logging.basicConfig(
     filename='stream.log', format=FMT, level=logging.INFO)
