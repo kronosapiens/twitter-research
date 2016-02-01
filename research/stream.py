@@ -20,7 +20,7 @@ api = tweepy.API(auth)
 if __name__ == '__main__':
     import sys
 
-    storage = sys.argv[1]
+    storage = sys.argv[1] if len(sys.argv) > 1 else 'stdout'
 
     logging.info('NEW RUN ' * 8)
     myStream = tweepy.Stream(auth=auth, listener=MyStreamListener(storage))
