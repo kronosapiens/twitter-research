@@ -114,14 +114,23 @@ To connect to the current EC2 instance (must have the .pem file):
 ssh -i QMSS_TP.pem ubuntu@ec2-54-172-89-178.compute-1.amazonaws.com
 ```
 
-To restarting the tweet collecting process:
-```
-cd ~/twitter_research
-nohup python research/stream.py nosql &
-```
-
 To check if the tweet collecting process is running:
 ```
 ps -aux | grep research/stream.py
 ```
 
+To start/restart the tweet collecting process:
+```
+sudo service stream restart
+```
+
+To check if the stream is running:
+```
+sudo service stream status
+```
+
+Alternative manual restart code (use only if previous command fails):
+```
+cd ~/twitter_research
+nohup python research/stream.py nosql &
+```
