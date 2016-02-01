@@ -52,6 +52,8 @@ keywords = [
     '@tperkins',
 
     'Sarah Palin',
+
+    'Iowa',
 ]
 
 users = []
