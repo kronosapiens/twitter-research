@@ -94,10 +94,31 @@ track=["Hillary Clinton", "Bernie Sanders", "Ted Cruz", "Donald Trump"]
 follow=[]
 ```
 
-
-
 # Command reference
 
+## Managing the stream
+
+To start/restart the tweet collecting process using Upstart (recommended):
+```
+sudo service stream restart
+```
+
+Alternative manual restart code (use only if previous command fails):
+```
+cd ~/twitter_research
+nohup python research/stream.py nosql &
+```
+
+To check if the tweet collecting process is running:
+```
+sudo service stream status
+
+# alternatively
+
+ps -aux | grep research/stream.py
+```
+
+## Additional commands
 
 To configure a new instance with the necessary Ubuntu packages:
 ```
@@ -114,23 +135,25 @@ To connect to the current EC2 instance (must have the .pem file):
 ssh -i QMSS_TP.pem ubuntu@ec2-54-172-89-178.compute-1.amazonaws.com
 ```
 
-To check if the tweet collecting process is running:
-```
-ps -aux | grep research/stream.py
-```
+# Logs and Output
 
-To start/restart the tweet collecting process:
-```
-sudo service stream restart
-```
+Output from the stream process will go to several locations, depending on the type of output.
 
-To check if the stream is running:
-```
-sudo service stream status
-```
+For regular log messages, check `stream.log`.
 
-Alternative manual restart code (use only if previous command fails):
+For tweet output (not main storage, just a sanity check that tweets are coming in), check `tweets.txt` or `nohup.out`.
+
+For Upstart logs, check `/var/log/upstart/stream.log` (you will probably need `sudo`).
+
+When looking at these files, the following commands may be helfpul:
+
 ```
-cd ~/twitter_research
-nohup python research/stream.py nosql &
+# Prints the last 10 lines of the file
+tail <log file>
+
+# Will continually output new additions to the file
+tail -f <log file>
+
+# Outputs the entire file (can be large)
+cat <log file>
 ```
