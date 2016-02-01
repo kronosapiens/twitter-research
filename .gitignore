@@ -69,5 +69,6 @@ config.*
 # Keys
 *.pem
 
-# Nohup
+# Stream output
 nohup.out
+tweets.txt
