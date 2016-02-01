@@ -116,6 +116,10 @@ class MyStreamListener(StreamListener):
         for key in tweet_dict.keys():
             if tweet_dict[key] == '':
                 del tweet_dict[key]
+            elif isinstance(tweet_dict[key], list):
+                for element in tweet_dict[key]:
+                    if isinstance(element, dict):
+                        self.remove_empty_strings(element)
             elif isinstance(tweet_dict[key], dict):
                 self.remove_empty_strings(tweet_dict[key])
 
