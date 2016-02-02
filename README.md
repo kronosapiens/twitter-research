@@ -15,9 +15,9 @@ A copy of `tweets.txt` (containing ~100,000 tweets) can be downloaded [here](htt
 
 **Example**
 
-'''
+```
 python research/wordcount_visualizer.py 'hillary bernie cruz trump'
-'''
+```
 
 Generates [this chart](https://rawgit.com/kronosapiens/twitter_research/master/bar.html).
 
