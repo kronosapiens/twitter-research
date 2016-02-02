@@ -1,3 +1,105 @@
+
+# Visualizations
+
+## Keyword Count Bar Chart
+
+You can generate a bar chart of keyword counts as follows:
+
+```
+$ python research/wordcount_visualizer 'keyword1 keyword2 keyword3' data_file(optional)
+```
+
+This command will parse the given `data_file` (by default, will use `data/tweets.txt`), tokenize the text of the tweets, and generate an html bar chart of the given keywords.
+
+A copy of `tweets.txt` (containing ~100,000 tweets) can be downloaded [here](https://console.aws.amazon.com/s3/home?region=us-east-1&bucket=primary-tweets) (requires access to the AWS console)
+
+
+# Command reference
+
+## Managing the stream
+
+To start/restart the tweet collecting process using Upstart (recommended):
+```
+sudo service stream restart
+```
+
+Alternative manual restart code (use only if previous command fails):
+```
+cd ~/twitter_research
+nohup python research/stream.py nosql &
+```
+
+To check if the tweet collecting process is running:
+```
+sudo service stream status
+
+# alternatively
+
+ps -aux | grep research/stream.py
+```
+
+## Additional commands
+
+To configure a new instance with the necessary Ubuntu packages:
+```
+sudo apt-get install libpq-dev python-dev lib32ncurses5-dev python-psycopg2
+```
+
+To connect to a remote PostgreSQL database:
+```
+psql -h <db url> -p 5432 -U <username> -d <db name>
+```
+
+To connect to the current EC2 instance (must have the .pem file):
+```
+ssh -i QMSS_TP.pem ubuntu@ec2-54-172-89-178.compute-1.amazonaws.com
+```
+
+
+# Logs and Output
+
+Output from the stream process will go to several locations, depending on the type of output.
+
+For regular log messages, check `stream.log`.
+
+For tweet output (not main storage, just a sanity check that tweets are coming in), check `tweets.txt` or `nohup.out`.
+
+For Upstart logs, check `/var/log/upstart/stream.log` (you will probably need `sudo`).
+
+When looking at these files, the following commands may be helfpul:
+
+```
+# Prints the last 10 lines of the file
+tail <log file>
+
+# Will continually output new additions to the file
+tail -f <log file>
+
+# Outputs the entire file (can be large)
+cat <log file>
+```
+
+
+# tweepy
+
+Tweepy is the third-party package we are using to interact with the Twitter api.
+
+Docs: http://tweepy.readthedocs.org/en/v3.5.0/getting_started.html
+
+# Queries
+
+https://dev.twitter.com/streaming/overview/request-parameters
+
+## Tracking
+```
+track=["Hillary Clinton", "Bernie Sanders", "Ted Cruz", "Donald Trump"]
+```
+
+## Following
+```
+follow=[]
+```
+
 # Resources
 
 https://dev.twitter.com/streaming/reference/post/statuses/filter
@@ -72,88 +174,4 @@ Function to return tweet limit based on constraints:
 ```
 def tweets_per_day(storage, days=180):
     return round(float(storage) / days), 2) * 250000
-```
-
-# tweepy
-
-Tweepy is the third-party package we are using to interact with the Twitter api.
-
-Docs: http://tweepy.readthedocs.org/en/v3.5.0/getting_started.html
-
-# Queries
-
-https://dev.twitter.com/streaming/overview/request-parameters
-
-## Tracking
-```
-track=["Hillary Clinton", "Bernie Sanders", "Ted Cruz", "Donald Trump"]
-```
-
-## Following
-```
-follow=[]
-```
-
-# Command reference
-
-## Managing the stream
-
-To start/restart the tweet collecting process using Upstart (recommended):
-```
-sudo service stream restart
-```
-
-Alternative manual restart code (use only if previous command fails):
-```
-cd ~/twitter_research
-nohup python research/stream.py nosql &
-```
-
-To check if the tweet collecting process is running:
-```
-sudo service stream status
-
-# alternatively
-
-ps -aux | grep research/stream.py
-```
-
-## Additional commands
-
-To configure a new instance with the necessary Ubuntu packages:
-```
-sudo apt-get install libpq-dev python-dev lib32ncurses5-dev python-psycopg2
-```
-
-To connect to a remote PostgreSQL database:
-```
-psql -h <db url> -p 5432 -U <username> -d <db name>
-```
-
-To connect to the current EC2 instance (must have the .pem file):
-```
-ssh -i QMSS_TP.pem ubuntu@ec2-54-172-89-178.compute-1.amazonaws.com
-```
-
-# Logs and Output
-
-Output from the stream process will go to several locations, depending on the type of output.
-
-For regular log messages, check `stream.log`.
-
-For tweet output (not main storage, just a sanity check that tweets are coming in), check `tweets.txt` or `nohup.out`.
-
-For Upstart logs, check `/var/log/upstart/stream.log` (you will probably need `sudo`).
-
-When looking at these files, the following commands may be helfpul:
-
-```
-# Prints the last 10 lines of the file
-tail <log file>
-
-# Will continually output new additions to the file
-tail -f <log file>
-
-# Outputs the entire file (can be large)
-cat <log file>
 ```
