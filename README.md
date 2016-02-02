@@ -13,6 +13,14 @@ This command will parse the given `data_file` (by default, will use `data/tweets
 
 A copy of `tweets.txt` (containing ~100,000 tweets) can be downloaded [here](https://console.aws.amazon.com/s3/home?region=us-east-1&bucket=primary-tweets) (requires access to the AWS console)
 
+**Example**
+
+'''
+python research/wordcount_visualizer.py 'hillary bernie cruz trump'
+'''
+
+Generates [this chart](https://rawgit.com/kronosapiens/twitter_research/master/bar.html).
+
 
 # Command reference
 
