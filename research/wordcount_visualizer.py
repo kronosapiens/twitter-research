@@ -21,12 +21,17 @@ def read_tweets(file_path):
 
 def count_words(tweets):
     counter = Counter()
+    tweet_count = 0
     for tweet in tweets:
+        if tweet_count % 1000 == 0:
+            print 'Parsed', tweet_count, 'tweets...'
         try:
             tokens = nltk.word_tokenize(tweet)
             counter.update(tokens)
+            tweet_count += 1
         except UnicodeDecodeError as ex:
-            print ex, tweet
+            pass # TODO: FIX THIS
+            # print ex, tweet
     return counter
 
 def filter_counter(counter, keywords):
