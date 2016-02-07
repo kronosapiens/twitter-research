@@ -72,3 +72,6 @@ config.*
 # Stream output
 nohup.out
 tweets.txt
+
+# Data
+data/
