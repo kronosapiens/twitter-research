@@ -5,7 +5,7 @@ https://github.com/tweepy/tweepy/blob/f76492964869caeda933d559fb51441014396b5f/t
 import calendar
 import decimal
 import json
-import time
+from datetime import datetime, timedelta
 
 from tweepy import StreamListener
 import boto3
@@ -25,7 +25,7 @@ class MyStreamListener(StreamListener):
             self.tweets = db.metadata.tables['tweets']
 
         if 'datefile' in storage:
-            self.cur_date = time.strftime('%m.%d.%Y')
+            self.cur_date = datetime.today().strftime('%m.%d.%Y')
             self.datefile = self.open_datefile(self.cur_date)
 
         self.storage = storage
@@ -151,6 +151,7 @@ class MyStreamListener(StreamListener):
         return open('data/tweets.{}.json'.format(cur_date), 'a')
 
     def update_datefile(self):
-        if self.cur_date != time.strftime('%m.%d.%Y'):
+        today = datetime.today().strftime('%m.%d.%Y')
+        if self.cur_date != today:
             self.datefile.close()
-            self.datefile = self.open_datefile(time.strftime('%m.%d.%Y'))
+            self.datefile = self.open_datefile(today)

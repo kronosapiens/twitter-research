@@ -16,7 +16,7 @@ from sqlalchemy import Table, Column, MetaData, Sequence
 from sqlalchemy import BigInteger, Integer, Unicode, DateTime
 from sqlalchemy.exc import DataError
 
-from config import db_uri
+from secrets import db_uri
 
 engine = sqlalchemy.create_engine(db_uri, echo=False)
 

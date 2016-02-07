@@ -6,14 +6,14 @@ Code to consume tweets from the Twitter Streaming API.
 '''
 import tweepy
 
-import config
+import secrets
 import keywords
 from utils import logging
 
 from streamlistener import MyStreamListener
 
-auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
-auth.set_access_token(config.access_token, config.access_token_secret)
+auth = tweepy.OAuthHandler(secrets.consumer_key, secrets.consumer_secret)
+auth.set_access_token(secrets.access_token, secrets.access_token_secret)
 
 api = tweepy.API(auth)
 
