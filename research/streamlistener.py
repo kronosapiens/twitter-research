@@ -36,11 +36,11 @@ class MyStreamListener(StreamListener):
 
     def on_data(self, raw_data):
         if 'nosql' in self.storage:
-            tweet_dict = self.to_json(raw_data)
-            if self.is_tweet(tweet_dict):
+            if self.is_tweet(raw_data):
+                tweet_dict = self.to_json(raw_data)
                 self.to_nosql(tweet_dict)
             else:
-                logging.info(tweet_dict)
+                logging.info(raw_data)
 
         if 'datefile' in self.storage:
             self.update_datefile()
