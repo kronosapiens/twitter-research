@@ -2,6 +2,7 @@ keywords = [
     '#iacaucus',
     '#iowacaucus',
     '#feelthebern',
+    '#gopdebate'
 
     'Clinton',
 
@@ -53,7 +54,7 @@ keywords = [
 
     'Sarah Palin',
 
-    'Iowa',
+    'New Hampshire',
 ]
 
 users = []
