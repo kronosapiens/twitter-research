@@ -5,6 +5,9 @@ dbk2123@columbia.edu
 Code to copy tweet JSON to AWS S3
 
 Configure as a cron job to run nightly:
+
+To run daily at 1am, run `crontab -e` and add the following line:
+0 1 * * * python ~/twitter_research/research/copy_to_s3.py 1 >> ~/twitter_research/cron.log
 '''
 
 import sys
