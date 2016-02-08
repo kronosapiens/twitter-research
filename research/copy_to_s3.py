@@ -10,6 +10,7 @@ To run daily at 1am, run `crontab -e` and add the following line:
 0 1 * * * python ~/twitter_research/research/copy_to_s3.py 1 >> ~/twitter_research/cron.log
 '''
 
+import os
 import sys
 from datetime import datetime, timedelta
 
@@ -27,8 +28,11 @@ file_name = 'tweets.{}.json'.format(date_to_copy)
 
 s3 = boto3.resource('s3')
 
+path_root = os.path.dirname(os.path.abspath(__file__))
+path = path_root + '/../' + config.DATA_DIR
+
 try:
-    s3.meta.client.upload_file(config.DATA_DIR + file_name, config.S3_BUCKET, file_name)
+    s3.meta.client.upload_file(path + file_name, config.S3_BUCKET, file_name)
     print 'Tweets copied!'
 except OSError as ex:
     logging.warning(ex)
