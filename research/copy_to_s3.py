@@ -37,19 +37,11 @@ def upload_file(file_name, path):
 today = datetime.today()
 date_to_copy = (today - timedelta(days=args.offset)).strftime('%m.%d.%Y')
 
-s3 = boto3.resource('s3')
-
 file_name = FILE_TEMPLATE.format(date_to_copy)
 path_root = os.path.dirname(os.path.abspath(__file__))
 path = path_root + '/../' + config.DATA_DIR
 
-print '[{}] Copying tweets from {}...'.format(today, file_name)
-try:
-    upload_file(file_name, path)
-    print 'Tweets copied!'
-except OSError as ex:
-    logging.warning(ex)
-    print 'Copy failed for reason:', ex
+s3 = boto3.resource('s3')
 
 if args.summarize:
     print 'Generating summary of', file_name, '...'
@@ -71,7 +63,16 @@ if args.summarize:
         logging.warning(ex)
         print 'Summary copy failed for reason:', ex
 
-
+print '[{}] Copying tweets from {}...'.format(today, file_name)
+try:
+    upload_file(file_name, path)
+    print 'Tweets copied!'
+except OSError as ex:
+    logging.warning(ex)
+    print 'Copy failed for reason:', ex
+else:
+    os.remove('{}/{}'.format(path, file_name))
+    print 'File deleted!'
 
 
 
