@@ -22,5 +22,6 @@ def item_line(obj):
     link = '<a href="{}">{}</a>'.format(url, obj.key)
     return '{}: {}<br>'.format(link, naturalsize(obj.size))
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

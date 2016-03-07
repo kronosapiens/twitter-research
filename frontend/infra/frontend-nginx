@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    server_name ec2-54-172-89-178.compute-1.amazonaws.com;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:///tmp/frontend.sock;
+    }
+}
