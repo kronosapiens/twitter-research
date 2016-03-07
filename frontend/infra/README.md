@@ -2,7 +2,7 @@
 
 See Upstart processes: `sudo initctl list`
 
-Control Upstart process: `sudo service frontend <start/stop/restart/status>`
+Control Upstart process: `sudo service frontend-uwsgi <start/stop/restart/status>`
 
 Restart NGINX: `sudo nginx -s reload`
 
@@ -10,7 +10,7 @@ Restart NGINX: `sudo nginx -s reload`
 
 frontend-nginx:
 /etc/nginx/sites-available/frontend-nginx
-/etc/nginx/sites-enabled/frontend-nginx (create link)
+/etc/nginx/sites-enabled/frontend-nginx (create link using `ln -s <source> <target>`)
 
 frontend-uwsgi.conf:
 /etc/init/frontend-uwsgi.conf
