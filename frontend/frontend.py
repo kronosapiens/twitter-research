@@ -1,5 +1,5 @@
 import boto3
-from flask import Flask
+from flask import Flask, render_template
 from humanize import naturalsize
 
 s3 = boto3.resource('s3')
@@ -9,19 +9,12 @@ BUCKET = 'primary-tweets'
 
 @app.route("/")
 def index():
-    page = "ELECTION TWEETS <br>"
+    objects = []
     for obj in s3.Bucket(BUCKET).objects.all():
-        page += item_line(obj)
-    return page
-
-def item_line(obj):
-    url = s3.meta.client.generate_presigned_url(
-        'get_object',
-        Params={'Bucket': BUCKET,'Key': obj.key}
-        )
-    link = '<a href="{}">{}</a>'.format(url, obj.key)
-    return '{}: {}<br>'.format(link, naturalsize(obj.size))
-
+        url = s3.meta.client.generate_presigned_url(
+            'get_object', Params={'Bucket': BUCKET,'Key': obj.key})
+        objects.append((obj.key, url, naturalsize(obj.size)))
+    return render_template('index.html', objects=objects)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
