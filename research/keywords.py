@@ -3,14 +3,11 @@ keywords = [
     '#iowacaucus',
     '#feelthebern',
     '#gopdebate'
-
     'Clinton',
-
     '@hillaryclinton',
     '@berniesanders',
     '@sensanders',
     '@martinomalley',
-
     '@realdonaldtrump',
     '@tedcruz',
     '@johnkasich',
@@ -18,11 +15,9 @@ keywords = [
     '@chrischristie',
     '@realbencarson',
     '@jebbush',
-
     'Hillaryclinton',
     'Berniesanders',
     'Martinomalley',
-
     'Jebbush',
     'Marcorubio',
     'Chrischristie',
@@ -30,11 +25,9 @@ keywords = [
     'Johnkasich',
     'Donaldtrump',
     'Tedcruz',
-
     'Hillary Clinton',
     'Bernie Sanders',
     'Martin O\'Malley',
-
     'Jeb bush',
     'Marco Rubio',
     'Ted Cruz',
@@ -42,18 +35,13 @@ keywords = [
     'John kasich',
     'Ben Carson',
     'Chris Christie',
-
     '#cruzcrew',
-
     'Bernie',
     'Hillary',
-
     'Heidi Cruz',
     'Megyn Kelly',
     '@tperkins',
-
     'Sarah Palin',
-
     'New Hampshire',
 ]
 
