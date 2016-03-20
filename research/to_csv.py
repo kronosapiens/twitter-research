@@ -24,9 +24,10 @@ import json
 import sys
 
 ### Command Line Options
-parser = argparse.ArgumentParser(description='Filter tweets to find those with location data')
-parser.add_argument('file', type=str)
-parser.add_argument('-l', '--level', type=int, choices=[1,2,3], default=2)
+parser = argparse.ArgumentParser(description='filter tweets to find those with location data')
+parser.add_argument('file', type=str, help='JSON file to parse')
+parser.add_argument('-l', '--level', type=int, choices=[1,2,3], default=2,
+    help='completeness level for parsing')
 args = parser.parse_args()
 
 base_keys = {
