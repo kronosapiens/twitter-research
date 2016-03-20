@@ -34,6 +34,8 @@ args = parser.parse_args()
 with open(args.file, 'r') as f:
     for tweet in f:
         tweet_json = json.loads(tweet)
+        if not tweet_json.get('id_str'):
+            continue # Null tweet
         if args.coordinates and tweet_json.get(COORDS) is None:
             pass
         elif args.location and tweet_json.get(USR, {}).get(LOC) is None:
