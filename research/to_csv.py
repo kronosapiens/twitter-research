@@ -5,9 +5,10 @@ dbk2123@columbia.edu
 Code to convert a tweet JSON to a compact CSV.
 
 Use:
-    python to_csv.py <file_name> <flags>
+    python to_csv.py <flags> <file_name>
 
 Options:
+    -h -- print help text
     -l -- pass a level between 1-3 to set the completeness of the parsing.
         There are three levels of parsing. Level 1 is the simplest, keeping
         only the text, screen_name, id_str, and created_at information from
@@ -17,6 +18,9 @@ Options:
 
 The parser will print the output to the screen. This output can be written
 to a file of your choice by adding "> <destination>" to the command.
+
+Example:
+    python to_csv.py -l 1 tweets.03.02.2016.json > tweets.csv
 '''
 
 import argparse
