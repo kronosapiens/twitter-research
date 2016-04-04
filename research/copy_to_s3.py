@@ -32,10 +32,10 @@ FILE_TEMPLATE = 'tweets.{}.json'
 CSV_TEMPLATE = 'tweets.{}.csv'
 SUMMARY_TEMPLATE = 'tweets.{}.summary.json'
 
-def upload_file(file_name, path):
+def upload_file(file_name, path, bucket):
     full_path = '{}/{}'.format(path, file_name)
     s3.meta.client.upload_file(
-        full_path, config.S3_BUCKET, file_name, ExtraArgs={'ACL': 'public-read'})
+        full_path, bucket, file_name, ExtraArgs={'ACL': 'public-read'})
 
 today = datetime.today()
 date_to_copy = (today - timedelta(days=args.offset)).strftime('%m.%d.%Y')
@@ -63,7 +63,7 @@ if args.summarize:
         print 'Summary creation failed for reason:', ex
 
     try:
-        upload_file(summary_name, path)
+        upload_file(summary_name, path, config.SUMMARY_BUCKET)
         print 'Summary copied!'
     except OSError as ex:
         logging.warning(ex)
@@ -84,7 +84,7 @@ if args.csv:
         print 'CSV creation failed for reason:', ex
 
     try:
-        upload_file(csv_name, path)
+        upload_file(csv_name, path, config.CSV_BUCKET)
         print 'CSV copied!'
     except OSError as ex:
         logging.warning(ex)
@@ -96,7 +96,7 @@ if args.csv:
 
 print 'Copying tweets from {}...'.format(file_name)
 try:
-    upload_file(file_name, path)
+    upload_file(file_name, path, config.JSON_BUCKET)
     print 'Tweets copied!'
 except OSError as ex:
     logging.warning(ex)

@@ -1,0 +1,16 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>File</th>
+      <th>Size</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in objects %}
+    <tr>
+      <td><a href="{{ object[1] }}">{{ object[0] }}</a></td>
+      <td>{{ object[2] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

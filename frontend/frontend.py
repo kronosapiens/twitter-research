@@ -5,15 +5,33 @@ from humanize import naturalsize
 s3 = boto3.resource('s3')
 app = Flask(__name__)
 
-BUCKET = 'primary-tweets'
+JSON_BUCKET = 'primary-tweets'
+SUMMARY_BUCKET = 'primary-tweets-summaries'
+CSV_BUCKET = 'primary-tweets-csv'
+
+def build_objects(bucket):
+    objects = []
+    for obj in s3.Bucket(bucket).objects.all():
+        url = s3.meta.client.generate_presigned_url(
+            'get_object', Params={'Bucket': bucket,'Key': obj.key})
+        objects.append((obj.key, url, naturalsize(obj.size)))
+    return objects
 
 @app.route("/")
 def index():
-    objects = []
-    for obj in s3.Bucket(BUCKET).objects.all():
-        url = s3.meta.client.generate_presigned_url(
-            'get_object', Params={'Bucket': BUCKET,'Key': obj.key})
-        objects.append((obj.key, url, naturalsize(obj.size)))
+    objects = build_objects(JSON_BUCKET)
+    return render_template('index.html', objects=objects)
+
+
+@app.route("/summaries")
+def summaries():
+    objects = build_objects(SUMMARY_BUCKET)
+    return render_template('index.html', objects=objects)
+
+
+@app.route("/csv")
+def csv():
+    objects = build_objects(CSV_BUCKET)
     return render_template('index.html', objects=objects)
 
 if __name__ == "__main__":

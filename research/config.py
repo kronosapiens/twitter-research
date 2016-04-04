@@ -6,5 +6,7 @@ Configuration for twitter_research
 '''
 
 DATA_DIR = 'data'
-S3_BUCKET = 'primary-tweets'
+JSON_BUCKET = 'primary-tweets'
+SUMMARY_BUCKET = 'primary-tweets-summaries'
+CSV_BUCKET = 'primary-tweets-csv'
 SUMMARIZE_FREQUENCY = 10 # 1/10 lines kept

@@ -6,26 +6,13 @@
       <div class="page-header">
         <h1>Election Tweets</h1>
       </div>
-      <p class="lead">These files contain raw Tweet JSON collected from the Twitter streaming API.</p>
-      <p>These tweets were filtered using approximately 40 keywords related to Presidential candidates across both parties (primarly candidate names).</p>
+      <p class="lead">These files contain Tweet collected from the Twitter streaming API.</p>
+      <p>These tweets were filtered using approximately 40 keywords related to Presidential candidates across both parties (primarily candidate names).</p>
       <p>The summary files contain 10% of the tweets from the corresponding daily file.</p>
+      <p>The CSV files are generated from the daily JSON files, mimicking the effect of the parseTweets command found in the R <a href="https://github.com/pablobarbera/streamR/blob">streamR</a> package.</p>
 
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>File</th>
-            <th>Size</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for object in objects %}
-          <tr>
-            <td><a href="{{ object[1] }}">{{ object[0] }}</a></td>
-            <td>{{ object[2] }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      {% include "_table.html" %}
+
     </div>
 {% endblock %}
 
