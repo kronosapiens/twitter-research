@@ -19,6 +19,7 @@ import boto3
 
 import config
 from utils import logging
+from to_csv import to_csv
 
 ### Command Line Options
 parser = argparse.ArgumentParser(description='Copy daily tweets to AWS S3')

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Daniel Kronovet
 dbk2123@columbia.edu
@@ -5,7 +6,10 @@ dbk2123@columbia.edu
 Code to convert a tweet JSON to a compact CSV.
 
 Use:
-    python to_csv.py <flags> <file_name>
+    python to_csv.py <flags> <input_file> <output_file>
+
+Example:
+    python to_csv.py -l 1 tweets.03.02.2016.json tweets.03.02.2016.csv
 
 Options:
     -h -- print help text
@@ -16,11 +20,6 @@ Options:
         function, with 2 corresponding to simplify=TRUE and 3 corresponding to
         simplify=FALSE.
 
-The parser will print the output to the screen. This output can be written
-to a file of your choice by adding "> <destination>" to the command.
-
-Example:
-    python to_csv.py -l 1 tweets.03.02.2016.json > tweets.csv
 '''
 
 import argparse
@@ -28,8 +27,11 @@ import json
 import sys
 
 ### Command Line Options
-parser = argparse.ArgumentParser(description='filter tweets to find those with location data')
-parser.add_argument('file', type=str, help='JSON file to parse')
+parser = argparse.ArgumentParser(
+    description='filter tweets to find those with location data')
+parser.add_argument('input_file', type=str, help='JSON file to parse')
+parser.add_argument('output_file', type=str, nargs='?',
+    help='Name of destination .csv file')
 parser.add_argument('-l', '--level', type=int, choices=[1,2,3], default=2,
     help='completeness level for parsing')
 args = parser.parse_args()
@@ -99,14 +101,6 @@ if args.level >= 2:
 if args.level == 3:
     keys.extend(advanced_keys.keys())
 
-def write(value):
-    if value is None:
-        pass
-    elif isinstance(value, basestring):
-        sys.stdout.write(value)
-    else:
-        sys.stdout.write(repr(value))
-
 def get_value(tweet_json, key_tuple):
     result = tweet_json
     key_tuple = key_tuple if isinstance(key_tuple, tuple) else (key_tuple,)
@@ -119,42 +113,54 @@ def get_value(tweet_json, key_tuple):
             return
     return result
 
-### Prepare headers
-write('idx')
-for key in keys:
-    write(',')
-    write(key)
-write('\n')
+def to_csv(input_file, output_file, level=2):
+    with open(output_file, 'w') as output_file:
 
-### Process file
-with open(args.file, 'r') as f:
-    idx = 1
-    for tweet in f:
-        tweet_json = json.loads(tweet)
-        if not tweet_json.get('id_str'):
-            continue # Null tweet
-        write(idx)
-        idx += 1
+        def write(string):
+            output_file.write(string.encode('utf-8'))
+
+        ### Prepare headers
+        write('idx')
         for key in keys:
             write(',')
-            if key in ['place_lat', 'place_lon']:
-                coords = get_value(tweet_json, key_dict[key])
-                if coords and key == 'place_lat':
-                    value = (coords[0][1] + coords[1][1]) / 2.
-                elif coords and key == 'place_lon':
-                    value = (coords[0][0] + coords[2][0]) / 2.
-                write(value)
-            else:
-                value = get_value(tweet_json, key_dict[key])
-                if isinstance(value, basestring):
-                    value = value.replace(',', ' ').encode('utf-8')
-                    if key in ['text', 'screen_name', 'description', 'location']:
-                        value = repr(value) # Escape newlines in the raw data
-                write(value)
-        write('\n')
+            write(key)
+
+        ### Process file
+        with open(input_file, 'r') as input_file:
+            idx = 1
+            for tweet in input_file:
+                tweet_json = json.loads(tweet, encoding='utf8')
+                if not tweet_json.get('id_str'):
+                    continue # Null tweet
+                write('\n')
+                write(str(idx))
+                idx += 1
+                for key in keys:
+                    write(',')
+                    value = get_value(tweet_json, key_dict[key])
+
+                    if value is None:
+                        continue
+
+                    if key == 'place_lat':
+                        value = (value[0][1] + value[1][1]) / 2.
+
+                    if key == 'place_lon':
+                        value = (coords[0][0] + coords[2][0]) / 2.
+
+                    value = unicode(value)
+                    value = value.replace('\n', ' ')
+                    value = value.replace(u',', ' ')
+                    value = value.replace(u'"', u"'") # May help avoid error: "EOF within quoted string"
+                    write(value)
 
 
+if __name__ == '__main__':
 
+    if args.output_file is None:
+        args.output_file = args.input_file + '.csv'
+
+    to_csv(args.input_file, args.output_file, args.level)
 
 
 

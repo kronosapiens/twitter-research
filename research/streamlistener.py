@@ -11,7 +11,6 @@ from tweepy import StreamListener
 import boto3
 from botocore.exceptions import ClientError
 
-import db
 from utils import logging
 
 class MyStreamListener(StreamListener):
@@ -50,14 +49,7 @@ class MyStreamListener(StreamListener):
 
     def on_status(self, status):
         if 'stdout' in self.storage:
-            print self.status_to_string(status)
-
-        if 'sql' in self.storage:
-            try:
-                self.to_sql(status)
-            except db.DataError as ex:
-                logging.error(ex)
-                raise ex
+            print(self.status_to_string(status))
 
     def on_error(self, status):
         logging.error(status)
@@ -107,14 +99,14 @@ class MyStreamListener(StreamListener):
     def to_nosql(self, tweet_dict):
         try:
             self.tweets.put_item(Item=tweet_dict)
-            print self.to_string(
+            print(self.to_string(
                 tweet_dict['user']['screen_name'],
                 tweet_dict['created_at'],
                 tweet_dict['text'],
-            )
+            ))
 
         except ClientError as ex:
-            print tweet_dict
+            print(tweet_dict)
             raise ex
 
     #####################

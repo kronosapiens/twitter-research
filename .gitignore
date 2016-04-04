@@ -73,4 +73,5 @@ tweets.txt
 
 # Data
 data/
-*json
+*.json
+*.csv
