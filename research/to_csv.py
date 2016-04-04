@@ -127,9 +127,13 @@ def to_csv(input_file, output_file, level=2):
         with open(input_file, 'r') as input_file:
             idx = 1
             for tweet in input_file:
-                tweet_json = json.loads(tweet, encoding='utf8')
+                try:
+                    tweet_json = json.loads(tweet, encoding='utf8')
+                except ValueError as ex:
+                    print 'json.loads failure:', ex
+                    continue # Syntax error
                 if not tweet_json.get('id_str'):
-                    continue # Null tweet
+                    continue # Not a tweet
                 write('\n')
                 write(str(idx))
                 idx += 1
@@ -159,7 +163,7 @@ if __name__ == '__main__':
     if args.output_file is None:
         args.output_file = args.input_file + '.csv'
 
-    to_csv(args.input_file, args.output_file, keys, args.level)
+    to_csv(args.input_file, args.output_file, args.level)
 
 
 
