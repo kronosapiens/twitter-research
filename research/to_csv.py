@@ -28,13 +28,12 @@ import sys
 
 ### Command Line Options
 parser = argparse.ArgumentParser(
-    description='filter tweets to find those with location data')
+    description='Convert json file to compact CSV')
 parser.add_argument('input_file', type=str, help='JSON file to parse')
 parser.add_argument('output_file', type=str, nargs='?',
     help='Name of destination .csv file')
 parser.add_argument('-l', '--level', type=int, choices=[1,2,3], default=2,
     help='completeness level for parsing')
-args = parser.parse_args()
 
 base_keys = {
     'text': 'text',
@@ -93,14 +92,6 @@ key_dict.update(base_keys)
 key_dict.update(simple_keys)
 key_dict.update(advanced_keys)
 
-keys = base_keys.keys()
-if args.level not in [1,2,3]:
-    raise ValueError('Level must be between 1-3')
-if args.level >= 2:
-    keys.extend(simple_keys.keys())
-if args.level == 3:
-    keys.extend(advanced_keys.keys())
-
 def get_value(tweet_json, key_tuple):
     result = tweet_json
     key_tuple = key_tuple if isinstance(key_tuple, tuple) else (key_tuple,)
@@ -114,8 +105,15 @@ def get_value(tweet_json, key_tuple):
     return result
 
 def to_csv(input_file, output_file, level=2):
-    with open(output_file, 'w') as output_file:
+    keys = base_keys.keys()
+    if level not in [1,2,3]:
+        raise ValueError('Level must be between 1-3')
+    if level >= 2:
+        keys.extend(simple_keys.keys())
+    if level == 3:
+        keys.extend(advanced_keys.keys())
 
+    with open(output_file, 'w') as output_file:
         def write(string):
             output_file.write(string.encode('utf-8'))
 
@@ -146,7 +144,7 @@ def to_csv(input_file, output_file, level=2):
                         value = (value[0][1] + value[1][1]) / 2.
 
                     if key == 'place_lon':
-                        value = (coords[0][0] + coords[2][0]) / 2.
+                        value = (value[0][0] + value[2][0]) / 2.
 
                     value = unicode(value)
                     value = value.replace('\n', ' ')
@@ -156,11 +154,12 @@ def to_csv(input_file, output_file, level=2):
 
 
 if __name__ == '__main__':
+    args = parser.parse_args()
 
     if args.output_file is None:
         args.output_file = args.input_file + '.csv'
 
-    to_csv(args.input_file, args.output_file, args.level)
+    to_csv(args.input_file, args.output_file, keys, args.level)
 
 
 
