@@ -8,6 +8,7 @@ app = Flask(__name__)
 JSON_BUCKET = 'primary-tweets'
 SUMMARY_BUCKET = 'primary-tweets-summaries'
 CSV_BUCKET = 'primary-tweets-csv'
+SUMMARY_CSV_BUCKET = 'primary-tweets-summaries-csv'
 
 def build_objects(bucket):
     objects = []
@@ -32,6 +33,11 @@ def summaries():
 @app.route("/csv")
 def csv():
     objects = build_objects(CSV_BUCKET)
+    return render_template('index.html', objects=objects)
+
+@app.route("/summaries_csv")
+def summaries_csv():
+    objects = build_objects(SUMMARY_CSV_BUCKET)
     return render_template('index.html', objects=objects)
 
 if __name__ == "__main__":
