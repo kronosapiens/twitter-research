@@ -31,6 +31,7 @@ args = parser.parse_args()
 FILE_TEMPLATE = 'tweets.{}.json'
 CSV_TEMPLATE = 'tweets.{}.csv'
 SUMMARY_TEMPLATE = 'tweets.{}.summary.json'
+SUMMARY_CSV_TEMPLATE = 'tweets.{}.summary.csv'
 
 def upload_file(file_name, path, bucket):
     full_path = '{}/{}'.format(path, file_name)
@@ -92,6 +93,27 @@ if args.csv:
     else:
         os.remove('{}/{}'.format(path, csv_name))
         print 'CSV deleted!'
+
+
+if args.summarize and args.csv:
+    print 'Generating Summary CSV of', file_name, '...'
+    summary_csv_name = SUMMARY_CSV_TEMPLATE.format(date_to_copy)
+    try:
+        to_csv('{}/{}'.format(path, summary_name), '{}/{}'.format(path, summary_csv_name), level=3)
+        print 'Summary CSV created!'
+    except Exception as ex:
+        logging.warning(ex)
+        print 'Summary CSV creation failed for reason:', ex
+
+    try:
+        upload_file(summary_csv_name, path, config.SUMMARY_CSV_BUCKET)
+        print 'Summary CSV copied!'
+    except OSError as ex:
+        logging.warning(ex)
+        print 'Copy failed for reason:', ex
+    else:
+        os.remove('{}/{}'.format(path, summary_csv_name))
+        print 'Summary CSV deleted!'
 
 
 print 'Copying tweets from {}...'.format(file_name)
