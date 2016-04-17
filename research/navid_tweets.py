@@ -13,14 +13,14 @@ import json
 def clean_tweets(input_file, output_file):
     with open(input_file) as f:
         with open(output_file) as output:
-        tweets = f.read().decode('string_escape').split('\n')
-        for t in tweets:
-            try:
-                tweet = json.loads(t[2:])
-                tweet = json.dumps(tweet)
-                output.write(tweet + '\n')
-            except ValueError as ex:
-                print ex
+            tweets = f.read().decode('string_escape').split('\n')
+            for t in tweets:
+                try:
+                    tweet = json.loads(t[2:])
+                    tweet = json.dumps(tweet)
+                    out.write(tweet + '\n')
+                except ValueError as ex:
+                    print ex
 
 if __name__ == '__main__':
     import sys
