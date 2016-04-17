@@ -11,8 +11,8 @@ Code snippets for handling Navid's string escape tweet files.
 import json
 
 def clean_tweets(input_file, output_file):
-    with open(input_file) as f:
-        with open(output_file) as output:
+    with open(input_file, 'r') as f:
+        with open(output_file, 'w') as output:
             tweets = f.read().decode('string_escape').split('\n')
             for t in tweets:
                 try:
