@@ -18,7 +18,7 @@ def clean_tweets(input_file, output_file):
                 try:
                     tweet = json.loads(t[2:])
                     tweet = json.dumps(tweet)
-                    out.write(tweet + '\n')
+                    output.write(tweet + '\n')
                 except ValueError as ex:
                     print ex
 
