@@ -4,6 +4,7 @@ from flask import Flask, render_template
 from humanize import naturalsize
 
 app = Flask(__name__)
+app.config['PROPAGATE_EXCEPTIONS'] = True
 
 MAIN_BUCKET = 'primary-tweets'
 SUMMARY_BUCKET = 'primary-tweets-summaries'
@@ -69,4 +70,4 @@ def summaries_csv():
     return render_template('index.html', objects=objects)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
