@@ -30,16 +30,17 @@ Mostly commands and file locations needed to administer the frontend.
 |-----------|-------------|
 | /etc/nginx/sites-available/frontend-nginx | config file for nginx |
 | /etc/systemd/system/frontend.service  | systemd unit file for frontend |
+| twitter_research/frontend/infra/frontend-uwsgi-centos.ini  | uwsgi ini file for frontend |
 
 ## Key commands
 
 ### sudo systemctl <command> <service>
 
-Commands: `status`, `
-
 Services: `nginx`, `frontend`
 
-### sudo uwsgi --ini frontend-uwsgi.ini
+Commands: `status`, `restart`
+
+### sudo uwsgi --ini frontend-uwsgi-centos.ini
 
 Call from the `/home/daniel/twitter_research/frontend/infra` directory.
 
