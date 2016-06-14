@@ -1,26 +1,54 @@
-import boto3
+import os
+
 from flask import Flask, render_template
 from humanize import naturalsize
 
-s3 = boto3.resource('s3')
 app = Flask(__name__)
 
-JSON_BUCKET = 'primary-tweets'
+MAIN_BUCKET = 'primary-tweets'
 SUMMARY_BUCKET = 'primary-tweets-summaries'
 CSV_BUCKET = 'primary-tweets-csv'
 SUMMARY_CSV_BUCKET = 'primary-tweets-summaries-csv'
 
+################
+### OLD AWS CODE
+
+# import boto3
+# s3 = boto3.resource('s3')
+
+# def build_objects(bucket):
+#     '''Build list of object tuples to render as table.
+
+#        Object structure: (name, url, size)
+#     '''
+#     objects = []
+#     for obj in s3.Bucket(bucket).objects.all():
+#         url = s3.meta.client.generate_presigned_url(
+#             'get_object', Params={'Bucket': bucket,'Key': obj.key})
+#         objects.append((obj.key, url, naturalsize(obj.size)))
+#     return objects
+
+################
+
 def build_objects(bucket):
+    '''Build list of object tuples to render as table.
+
+       Object structure: (name, url, size)
+    '''
     objects = []
-    for obj in s3.Bucket(bucket).objects.all():
-        url = s3.meta.client.generate_presigned_url(
-            'get_object', Params={'Bucket': bucket,'Key': obj.key})
-        objects.append((obj.key, url, naturalsize(obj.size)))
+    data_dir = 'data/{}'.format(bucket)
+    walk_dir = os.path.realpath('..') + '/' + data_dir
+    for root, dirs, files in os.walk(walk_dir):
+        for file_name in files:
+            objects.append((
+                file_name,
+                data_dir +  '/' + file_name,
+                os.path.getsize(walk_dir + '/' + file_name)))
     return objects
 
 @app.route("/")
 def index():
-    objects = build_objects(JSON_BUCKET)
+    objects = build_objects(MAIN_BUCKET)
     return render_template('index.html', objects=objects)
 
 

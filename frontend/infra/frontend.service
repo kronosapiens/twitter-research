@@ -1,0 +1,12 @@
+[Unit]
+Description=uWSGI instance to serve frontend
+After=network.target
+
+[Service]
+User=daniel
+Group=nginx
+WorkingDirectory=/home/daniel/twitter_research/frontend/infra
+ExecStart=/usr/bin/uwsgi --ini frontend-uwsgi.ini
+
+[Install]
+WantedBy=multi-user.target

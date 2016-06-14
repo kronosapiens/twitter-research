@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    server_name primarytweets.iserp.columbia.edu;
+
+    root /home/daniel/twitter_research;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:///run/uwsgi/frontend.sock;
+    }
+
+    location /data/ {
+        autoindex on;
+    autoindex_exact_size off;
+    }
+
+}
