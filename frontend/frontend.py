@@ -44,7 +44,8 @@ def build_objects(bucket):
             objects.append((
                 file_name,
                 data_dir +  '/' + file_name,
-                os.path.getsize(walk_dir + '/' + file_name)))
+                naturalsize(os.path.getsize(walk_dir + '/' + file_name))
+                ))
     return objects
 
 @app.route("/")
